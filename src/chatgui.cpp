@@ -5,6 +5,7 @@
 #include "chatbot.h"
 #include "chatlogic.h"
 #include "chatgui.h"
+#include <memory>
 
 // size of chatbot window
 const int width = 414;
@@ -118,7 +119,7 @@ ChatBotPanelDialog::ChatBotPanelDialog(wxWindow *parent, wxWindowID id)
     ////
 
     // create chat logic instance
-    _chatLogic = new ChatLogic(); 
+    _chatLogic = std::unique_ptr<ChatLogic>(new ChatLogic());
 
     // pass pointer to chatbot dialog so answers can be displayed in GUI
     _chatLogic->SetPanelDialogHandle(this);
@@ -135,7 +136,7 @@ ChatBotPanelDialog::~ChatBotPanelDialog()
     //// STUDENT CODE
     ////
 
-    delete _chatLogic;
+    // delete _chatLogic;
 
     ////
     //// EOF STUDENT CODE
@@ -195,7 +196,7 @@ ChatBotPanelDialogItem::ChatBotPanelDialogItem(wxPanel *parent, wxString text, b
     : wxPanel(parent, -1, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_NONE)
 {
     // retrieve image from chatbot
-    wxBitmap *bitmap = isFromUser == true ? nullptr : ((ChatBotPanelDialog*)parent)->GetChatLogicHandle()->GetImageFromChatbot(); 
+    wxBitmap *bitmap = isFromUser == true ? nullptr : ((ChatBotPanelDialog*)parent)->GetChatLogicHandle()->GetImageFromChatbot();
 
     // create image and text
     _chatBotImg = new wxStaticBitmap(this, wxID_ANY, (isFromUser ? wxBitmap(imgBasePath + "user.png", wxBITMAP_TYPE_PNG) : *bitmap), wxPoint(-1, -1), wxSize(-1, -1));
