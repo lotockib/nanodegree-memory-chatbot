@@ -45,6 +45,86 @@ ChatBot::~ChatBot()
 //// STUDENT CODE
 ////
 
+ChatBot::ChatBot(const ChatBot & source)
+{
+    // Deep copy _image
+    _image = new wxBitmap();
+    *_image = *source._image;
+
+    // Don't deep copy objects ChatBot doesn't own
+    _chatLogic = nullptr;
+    _rootNode = nullptr;
+
+    // Notify
+    std::cout << "ChatBot Copy Constructor called, object created here: " << this << std::endl;
+}
+
+ChatBot &ChatBot::operator=(const ChatBot & source)
+{
+    if ( this == &source)  // protect against self assignment
+    {
+        return *this;
+    }
+    
+    // Delete in case of pre-existing data
+    delete _image;
+    delete _chatLogic;
+    delete _rootNode;
+
+    // Deep copy _image
+    _image = new wxBitmap();
+    *_image = *source._image;
+
+    // Don't deep copy objects ChatBot doesn't own
+    _chatLogic = nullptr;
+    _rootNode = nullptr;
+
+    // Notify
+    std::cout << "ChatBot Copy Assignment Operator called, object created here: " << this << std::endl;
+
+    return *this;
+}
+
+ChatBot::ChatBot(ChatBot && source)
+{
+    // Transfer pointer ownership
+    _image = source._image;
+    _chatLogic = source._chatLogic;
+    _rootNode = source._rootNode;
+    source._image = nullptr;
+    source._chatLogic = nullptr;
+    source._rootNode = nullptr;
+
+    // Notify
+    std::cout << "ChatBot Move Constructor called, object moved here: " << this << std::endl;
+}
+
+ChatBot &ChatBot::operator=(ChatBot && source)
+{
+    if ( this == &source )
+    {
+        return *this;  // protect against self assignment
+    }
+
+    // Delete in case of pre existing data
+    delete _image;
+    delete _chatLogic;
+    delete _rootNode;
+
+    // Transfer pointer ownership
+    _image = source._image;
+    _chatLogic = source._chatLogic;
+    _rootNode = source._rootNode;
+    source._image = nullptr;
+    source._chatLogic = nullptr;
+    source._rootNode = nullptr;
+
+    // Notify
+    std::cout << "ChatBot Move Assignment operator called, object moved here: " << this << std::endl;
+
+    return *this;
+}
+
 ////
 //// EOF STUDENT CODE
 
